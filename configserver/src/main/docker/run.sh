@@ -1,5 +1,5 @@
 #!/bin/sh
 echo "********************************************************"
-echo "Starting Organization Service"
+echo "Starting Config Server"
 echo "********************************************************"
 java -jar /usr/local/configserver/configserver.jar
