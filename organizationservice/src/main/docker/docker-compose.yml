@@ -1,0 +1,38 @@
+version: '2'
+services:
+  database:
+      image: mysql:latest
+      ports:
+      - "3306:3306"
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=licensesdb
+  configserver:
+      image: appibh/config-server:v1
+      ports:
+         - "8888:8888"
+  licensingservice:
+      image: appibh/licensing-service:v1
+      ports:
+        - "18081:18081"
+      environment:
+        PROFILE: "docker"
+        SERVER_PORT: "18081"
+        CONFIGSERVER_URI: "http://192.168.33.70:8888"
+  organizationservice1:
+      image: appibh/organization-service:v1
+      ports:
+        - "18082:18082"
+      environment:
+        PROFILE: "docker"
+        SERVER_PORT: "18082"
+        CONFIGSERVER_URI: "http://192.168.33.70:8888"
+  organizationservice2:
+      image: appibh/organization-service:v1
+      ports:
+        - "18083:18083"
+      environment:
+        PROFILE: "docker"
+        SERVER_PORT: "18083"
+        CONFIGSERVER_URI: "http://192.168.33.70:8888"
+  
