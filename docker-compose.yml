@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
   database:
       image: mysql:latest
@@ -9,6 +9,8 @@ services:
         - MYSQL_DATABASE=licensesdb
   configserver:
       image: appibh/config-server:v1
+      healthcheck:
+        test: "exit 0"
       ports:
          - "8888:8888"
   licensingservice:
@@ -19,6 +21,9 @@ services:
         PROFILE: "docker"
         SERVER_PORT: "18081"
         CONFIGSERVER_URI: "http://192.168.33.70:8888"
+      depends_on:
+        configserver:
+          condition: service_healthy
   organizationservice1:
       image: appibh/organization-service:v1
       ports:
@@ -27,6 +32,9 @@ services:
         PROFILE: "docker"
         SERVER_PORT: "18082"
         CONFIGSERVER_URI: "http://192.168.33.70:8888"
+      depends_on:
+        configserver:
+          condition: service_healthy
   organizationservice2:
       image: appibh/organization-service:v1
       ports:
@@ -35,4 +43,6 @@ services:
         PROFILE: "docker"
         SERVER_PORT: "18083"
         CONFIGSERVER_URI: "http://192.168.33.70:8888"
-  
+      depends_on:
+        configserver:
+          condition: service_healthy
